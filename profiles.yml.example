@@ -1,0 +1,11 @@
+revenue_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "md:datacoves_challenge"
+      threads: 1
+    local:
+      type: duckdb
+      path: "local.duckdb"
+      threads: 1
