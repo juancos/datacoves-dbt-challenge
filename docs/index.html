@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$740 or $610? Why Your Business Needs a Number It Can Trust</title>
+<meta name="description" content="A small payment example makes the business case for dbt: clear definitions, repeatable calculations, and checks you can inspect.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAFAF7;
+    --ink:#171A18;
+    --green:#176B45;
+    --mint:#EAF4ED;
+    --ink-60:#5C635F;
+    --ink-40:#8A918D;
+    --rule:#E2E4DF;
+    --serif:"Newsreader",Georgia,"Times New Roman",serif;
+    --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:19px;
+    line-height:1.72;
+    font-weight:380;
+    font-optical-sizing:auto;
+    overflow-x:hidden;
+  }
+
+  .wrap{max-width:760px;margin-inline:auto;padding-inline:26px}
+  .wide{max-width:1060px;margin-inline:auto;padding-inline:26px}
+
+  a{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(23,107,69,.35);transition:border-color .18s ease}
+  a:hover{border-bottom-color:var(--green)}
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+
+  h1,h2,h3{font-weight:440;letter-spacing:-.021em;line-height:1.08;margin:0}
+
+  /* ---------- masthead ---------- */
+  .masthead{padding:clamp(52px,9vw,104px) 0 clamp(38px,5vw,58px)}
+  h1{font-size:clamp(2.55rem,7.6vw,4.5rem);max-width:15ch}
+  .standfirst{
+    font-size:clamp(1.18rem,2.4vw,1.44rem);
+    line-height:1.5;
+    font-weight:320;
+    color:var(--ink-60);
+    margin:clamp(22px,3vw,30px) 0 0;
+    max-width:46ch;
+  }
+  .byline{
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    margin-top:clamp(34px,5vw,50px);
+    padding-top:22px;
+    border-top:1px solid var(--rule);
+    font-family:var(--sans);
+  }
+  .byline .name{font-size:.95rem;font-weight:600;letter-spacing:.005em}
+  .byline .role{font-size:.875rem;color:var(--ink-60)}
+
+  /* ---------- article ---------- */
+  article p{margin:0 0 1.25em;max-width:64ch}
+  article h2{
+    font-size:clamp(1.62rem,3.4vw,2.15rem);
+    margin:clamp(56px,7vw,84px) 0 .7em;
+    max-width:20ch;
+  }
+  .lede{font-size:1.1em;line-height:1.62}
+
+  .plain-list{margin:0 0 1.5em;padding:0;list-style:none;max-width:64ch}
+  .plain-list li{
+    padding:0 0 .95em 22px;
+    border-left:2px solid var(--mint);
+    padding-left:20px;
+    margin-bottom:.2em;
+  }
+  .plain-list li:last-child{padding-bottom:0}
+  .plain-list b{font-weight:600}
+
+  /* ---------- equation band ---------- */
+  .band{
+    background:var(--mint);
+    margin:clamp(48px,6vw,76px) 0;
+    padding:clamp(44px,6vw,74px) 0;
+  }
+  .equation{margin:0}
+  .eq-row{
+    display:flex;align-items:flex-end;justify-content:center;
+    gap:clamp(18px,4vw,52px);
+    flex-wrap:nowrap;
+  }
+  .eq-term{text-align:center;min-width:0}
+  .eq-num{
+    display:block;
+    font-size:clamp(2.4rem,7.4vw,5rem);
+    line-height:1;
+    letter-spacing:-.03em;
+    font-weight:420;
+    font-variant-numeric:lining-nums tabular-nums;
+  }
+  .eq-result .eq-num{color:var(--green)}
+  .eq-label{
+    display:block;margin-top:14px;
+    font-family:var(--sans);font-size:.8rem;font-weight:500;
+    color:var(--ink-60);letter-spacing:.01em;
+  }
+  .eq-op{
+    font-size:clamp(1.5rem,3.6vw,2.4rem);
+    line-height:1;color:var(--ink-40);
+    padding-bottom:clamp(18px,2.6vw,30px);
+    font-weight:300;
+  }
+  .eq-detail{
+    margin:clamp(34px,4vw,46px) auto 0;
+    text-align:center;max-width:40ch;
+    font-size:1rem;color:var(--ink-60);
+  }
+  .eq-detail b{color:var(--ink);font-weight:520}
+  .eq-caption{
+    margin:22px 0 0;text-align:center;
+    font-family:var(--sans);font-size:.76rem;color:var(--ink-60);
+    letter-spacing:.02em;
+  }
+
+  /* ---------- ledger table ---------- */
+  .ledger-wrap{margin:clamp(40px,5vw,60px) 0}
+  table{
+    width:100%;border-collapse:collapse;
+    font-family:var(--sans);font-size:.9rem;
+    font-variant-numeric:tabular-nums;
+  }
+  caption{
+    text-align:left;font-family:var(--sans);font-size:.78rem;
+    color:var(--ink-60);padding-bottom:16px;letter-spacing:.02em;
+  }
+  th,td{padding:11px 10px;text-align:right;border-bottom:1px solid var(--rule)}
+  th:first-child,td:first-child{text-align:left;padding-left:0}
+  th:last-child,td:last-child{padding-right:0}
+  thead th{
+    font-weight:500;font-size:.78rem;color:var(--ink-60);
+    border-bottom:1px solid var(--ink);padding-bottom:9px;
+  }
+  tbody tr.cancelled td{color:var(--ink-40)}
+  tbody td.net{font-weight:600}
+  tfoot td{
+    padding-top:14px;font-weight:600;
+    border-bottom:none;border-top:1px solid var(--ink);
+  }
+  tfoot td.total{color:var(--green)}
+
+  /* ---------- flow diagram ---------- */
+  .flow{
+    margin:clamp(48px,6vw,76px) 0;
+    display:grid;
+    grid-template-columns:1fr auto 1.25fr auto 1fr;
+    align-items:stretch;
+    gap:clamp(14px,2vw,26px);
+  }
+  .node{padding:26px 24px;background:transparent;border:1px solid var(--rule);border-radius:3px}
+  .node.calc{background:var(--mint);border-color:transparent}
+  .node.out{border-color:var(--green)}
+  .node h3{
+    font-family:var(--sans);font-size:.8rem;font-weight:600;
+    letter-spacing:.01em;line-height:1.4;margin-bottom:16px;
+  }
+  .node ul{margin:0;padding:0;list-style:none;font-family:var(--sans);font-size:.875rem;line-height:1.55}
+  .node li{padding:5px 0;color:var(--ink-60)}
+  .node li b{color:var(--ink);font-weight:500}
+  .node .check{position:relative;padding-left:19px}
+  .node .check::before{
+    content:"";position:absolute;left:0;top:13px;
+    width:9px;height:9px;border-left:1.5px solid var(--green);border-bottom:1.5px solid var(--green);
+    transform:rotate(-45deg);
+  }
+  .arrow{align-self:center;color:var(--ink-40);font-size:1.2rem;line-height:1}
+  .out-figure{
+    font-family:var(--serif);font-size:2.3rem;line-height:1.1;
+    color:var(--green);letter-spacing:-.025em;font-variant-numeric:tabular-nums;
+  }
+  .out-sub{font-family:var(--sans);font-size:.85rem;color:var(--ink-60);margin-top:8px;line-height:1.5}
+  .fig-caption{
+    font-family:var(--sans);font-size:.76rem;color:var(--ink-60);
+    margin-top:20px;letter-spacing:.02em;
+  }
+
+  /* ---------- build strip ---------- */
+  .build{
+    margin:clamp(36px,4.5vw,52px) 0;
+    border-left:2px solid var(--green);
+    padding:6px 0 6px 24px;
+    max-width:64ch;
+  }
+  .build .sum{
+    font-size:clamp(1.15rem,2.6vw,1.5rem);
+    letter-spacing:-.015em;line-height:1.35;
+    font-variant-numeric:tabular-nums;
+  }
+  .build .sum b{font-weight:520;color:var(--green)}
+  .build .note{font-family:var(--sans);font-size:.85rem;color:var(--ink-60);margin-top:10px;line-height:1.55}
+
+  /* ---------- limitations ---------- */
+  .limits{
+    margin:clamp(44px,5.5vw,68px) 0;
+    padding:30px 30px 26px;
+    border:1px solid var(--rule);
+    border-radius:3px;
+    max-width:64ch;
+  }
+  .limits h3{
+    font-family:var(--sans);font-size:.82rem;font-weight:600;
+    margin-bottom:14px;letter-spacing:.01em;
+  }
+  .limits ul{margin:0;padding:0;list-style:none;font-size:1rem;line-height:1.6;color:var(--ink-60)}
+  .limits li{padding:4px 0}
+
+  /* ---------- cta + footer ---------- */
+  .cta{margin:clamp(52px,6vw,78px) 0 0}
+  .btn{
+    display:inline-block;
+    font-family:var(--sans);font-size:.9rem;font-weight:500;
+    color:var(--paper);background:var(--green);
+    padding:13px 26px;border-radius:3px;border-bottom:none;
+    transition:background-color .18s ease;
+  }
+  .btn:hover{background:#125538;border-bottom:none}
+
+  footer{
+    margin-top:clamp(64px,8vw,110px);
+    padding:34px 0 clamp(60px,8vw,90px);
+    border-top:1px solid var(--rule);
+    font-family:var(--sans);font-size:.85rem;color:var(--ink-60);
+    line-height:1.7;
+  }
+  footer p{margin:0 0 .5em;max-width:62ch}
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:860px){
+    .flow{grid-template-columns:1fr;gap:12px}
+    .arrow{transform:rotate(90deg);justify-self:center;padding:2px 0}
+  }
+  @media (max-width:620px){
+    body{font-size:18px}
+    .wrap,.wide{padding-inline:20px}
+    .eq-row{flex-direction:column;align-items:center;gap:10px}
+    .eq-op{padding-bottom:0;padding-top:4px}
+    .eq-num{font-size:clamp(2.6rem,13vw,3.4rem)}
+    .eq-term{width:100%}
+    table{font-size:.82rem}
+    th,td{padding:10px 5px}
+    .limits{padding:24px 22px 20px}
+    .node{padding:22px 20px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead wrap">
+  <h1>$740 or $610? Why Your Business Needs a Number It Can Trust</h1>
+  <p class="standfirst">A small payment example makes the business case for dbt: clear definitions, repeatable calculations, and checks you can inspect.</p>
+  <div class="byline">
+    <span class="name">Juan José Pardo</span>
+    <span class="role">Data Quality &amp; Analytics</span>
+  </div>
+</header>
+
+<article>
+
+  <div class="wrap">
+    <p class="lede">Imagine a Monday leadership meeting. Someone asks a simple question: how much money did we collect? Two reports are open on the table. One says $740. The other says $610.</p>
+
+    <p>Nobody is lying and nobody made an arithmetic error. The two reports answer different questions. One totals everything customers were charged. The other subtracts what was refunded and counts only the orders that were actually completed. Both are reasonable definitions of "money collected." Only one of them answers what the room is asking.</p>
+
+    <p>What follows is twenty minutes spent reconciling two numbers instead of making a decision. That meeting is the problem worth solving, not the arithmetic.</p>
+
+    <h2>Six orders, small enough to check by hand</h2>
+
+    <p>Here is a deliberately tiny example: four customers, six orders, eight payment transactions. It is fictional, and small enough that you can check every figure yourself.</p>
+  </div>
+
+  <div class="band">
+    <div class="wide">
+      <figure class="equation" role="group" aria-label="Total charges of $740 minus total refunds of $130 equals net collections of $610.">
+        <div class="eq-row">
+          <div class="eq-term">
+            <span class="eq-num">$740</span>
+            <span class="eq-label">charges</span>
+          </div>
+          <div class="eq-op" aria-hidden="true">−</div>
+          <div class="eq-term">
+            <span class="eq-num">$130</span>
+            <span class="eq-label">refunds</span>
+          </div>
+          <div class="eq-op" aria-hidden="true">=</div>
+          <div class="eq-term eq-result">
+            <span class="eq-num">$610</span>
+            <span class="eq-label">net collections</span>
+          </div>
+        </div>
+        <p class="eq-detail">Order 104: <b>$200 paid − $50 refunded = $150 collected.</b></p>
+        <p class="eq-caption">Synthetic example · All amounts in USD</p>
+      </figure>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p>Two orders are worth a closer look. Order 103 was cancelled: the customer was charged $80 and refunded the whole $80, so it contributed nothing. Order 104 was completed with a partial refund: $200 paid, $50 refunded, $150 collected.</p>
+
+    <div class="ledger-wrap">
+      <table>
+        <caption>The full dataset: 4 customers, 6 orders, 8 payment transactions. Fictional figures, in USD.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Order</th>
+            <th scope="col">Status</th>
+            <th scope="col">Charged</th>
+            <th scope="col">Refunded</th>
+            <th scope="col">Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">101</th><td>Completed</td><td>$100</td><td>—</td><td class="net">$100</td></tr>
+          <tr><th scope="row">102</th><td>Completed</td><td>$150</td><td>—</td><td class="net">$150</td></tr>
+          <tr class="cancelled"><th scope="row">103</th><td>Cancelled</td><td>$80</td><td>$80</td><td class="net">$0</td></tr>
+          <tr><th scope="row">104</th><td>Completed</td><td>$200</td><td>$50</td><td class="net">$150</td></tr>
+          <tr><th scope="row">105</th><td>Completed</td><td>$120</td><td>—</td><td class="net">$120</td></tr>
+          <tr><th scope="row">106</th><td>Completed</td><td>$90</td><td>—</td><td class="net">$90</td></tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">All six orders</td>
+            <td>$740</td>
+            <td>$130</td>
+            <td class="total">$610</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <p>That is also why the two ways of counting land in the same place here. Subtract every refund from every charge and you get $610. Add up the net amounts on the five completed orders and you get $610 again, because the cancelled order nets to zero. In a real business, where cancellations are not always refunded in full, those two methods drift apart. Which is why the definition needs to live somewhere other than in someone's spreadsheet.</p>
+
+    <h2>What dbt actually contributes</h2>
+
+    <p>The fix is not a bigger dashboard. It is agreeing on one definition and making it repeatable.</p>
+
+    <p>That is what dbt is for. It is a tool used by data teams to transform data that already sits in your database. The team writes the calculation once — what counts as a completed order, how refunds are handled — and dbt runs it the same way every time, with checks attached and documentation produced alongside it.</p>
+
+    <p>In business terms, that buys you four things:</p>
+
+    <ul class="plain-list">
+      <li><b>Shared rules.</b> "Net collections" is defined in one place, so Finance and Marketing stop arriving with different totals.</li>
+      <li><b>Automatic checks.</b> A missing order ID, a status nobody recognizes, a payment pointing at an order that does not exist: these surface when the data is built, not in the meeting.</li>
+      <li><b>Reviewable changes.</b> The calculation lives in version-controlled code, so changing the definition is proposed, reviewed and dated like any other decision.</li>
+      <li><b>Traceable results.</b> Anyone can look up how a number was produced.</li>
+    </ul>
+
+    <p>It is worth being equally clear about what dbt does not do. It does not decide the business definition; that is a judgment call, and Finance should own it. It does not take over Finance's responsibility for the number. And it does not repair incorrect source data. It tells you the data is wrong, early and loudly, but someone still has to go fix it.</p>
+  </div>
+
+  <div class="wide">
+    <figure class="flow" role="group" aria-labelledby="flow-caption">
+      <div class="node">
+        <h3>What the business already records</h3>
+        <ul>
+          <li><b>4</b> customers</li>
+          <li><b>6</b> orders</li>
+          <li><b>8</b> payment transactions</li>
+        </ul>
+      </div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="node calc">
+        <h3>One agreed calculation, with checks attached</h3>
+        <ul>
+          <li class="check">Every order appears once</li>
+          <li class="check">Required values are present</li>
+          <li class="check">Statuses are ones we expect</li>
+          <li class="check">Every payment belongs to a real order</li>
+        </ul>
+      </div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="node out">
+        <h3>The number everyone uses</h3>
+        <div class="out-figure">$610.00</div>
+        <div class="out-sub">net collections across 5 completed orders</div>
+      </div>
+    </figure>
+    <p class="fig-caption" id="flow-caption">Customer, order and payment records feed a single agreed calculation. The checks run against that calculation every time it is built. Synthetic example · All amounts in USD.</p>
+  </div>
+
+  <div class="wrap">
+    <h2>What I built to test this</h2>
+
+    <p>To keep the argument concrete, I built the example above as a working project.</p>
+
+    <p>dbt is installed and runs locally against MotherDuck, a cloud database. Three CSV files — customers, orders and payments — are loaded using dbt seeds. One table model calculates net collections for each completed order. Payments are aggregated by order before they are joined, so an order with three payment rows still appears once instead of three times. That single detail is where a lot of hand-built revenue reports quietly go wrong.</p>
+
+    <div class="build">
+      <p class="sum">A full build runs 3 seeds, 1 model and 23 tests: <b>27 successful steps.</b></p>
+      <p class="note">The 23 tests check the structure of the data — unique IDs, required values, accepted status values, and valid relationships between tables. They do not reconcile the financial total.</p>
+    </div>
+
+    <p>The total itself I verified separately, by querying MotherDuck directly: five completed orders, $610.00 in net collections. The tests tell you the data is well-formed. The query tells you the number matches the definition. Those are two different guarantees.</p>
+
+    <div class="limits">
+      <h3>What this demonstration does not prove</h3>
+      <ul>
+        <li>It is a small demonstration, not a production financial system.</li>
+        <li>Net collections here are not recognized accounting revenue.</li>
+        <li>Results are attributed to order date, not payment date.</li>
+        <li>Production use would need reconciliation against source systems, explicit rules for currency and refund timing, and ongoing monitoring.</li>
+      </ul>
+    </div>
+
+    <!-- Optional assets. To publish either one, remove the `hidden` attribute
+         and fill in the real URL. Leave hidden if the asset does not exist. -->
+    <section id="walkthrough" hidden>
+      <h2>Watch the build</h2>
+      <p>A short walkthrough of the project running end to end.</p>
+      <p><a href="#" id="video-link">Watch the walkthrough video</a></p>
+    </section>
+
+    <figure id="verification" hidden>
+      <img id="verification-shot" src="" alt="MotherDuck query result showing completed orders: 5 and net collections USD: 610.00">
+      <figcaption class="fig-caption">The totals verified directly in MotherDuck.</figcaption>
+    </figure>
+
+    <h2>What I'm asking for</h2>
+
+    <p>A four-week pilot, on one metric we already argue about.</p>
+
+    <p>Finance owns the definition. The data team implements and maintains it. We run it alongside the existing report for the full four weeks rather than switching a critical report over.</p>
+
+    <p>That gives us enough to judge three things: how much reconciliation effort the current process consumes, how many discrepancies show up between the two versions, and how long it takes to change the calculation when someone asks for a variation.</p>
+
+    <p>The costs are real and worth naming up front: engineering time to build it, training time for the analysts, database usage, and whatever we choose for hosting and scheduling. I have not attached a return figure to this, because I do not have one yet. That is what the pilot is for.</p>
+
+    <p>The request is narrow on purpose: one metric, four weeks, run in parallel, measured against what we do today. If the discrepancies do not shrink and the definition is no easier to change, we stop, and we have learned that cheaply. If they do, we will be deciding how far to take this from evidence rather than from a recommendation.</p>
+
+    <p class="cta"><a class="btn" href="https://github.com/juancos/datacoves-dbt-challenge">Explore the project on GitHub</a></p>
+  </div>
+
+</article>
+
+<footer>
+  <div class="wrap">
+    <p>All figures in this article come from a synthetic four-customer dataset created for demonstration purposes. They do not describe the results of any real company.</p>
+    <p>The code, the seeds and the tests are in the <a href="https://github.com/juancos/datacoves-dbt-challenge">project repository</a>, and an earlier draft of this argument is kept in <a href="https://github.com/juancos/datacoves-dbt-challenge/blob/main/docs/why_dbt.md">the project notes</a>.</p>
+    <p>Juan José Pardo · Data Quality &amp; Analytics</p>
+  </div>
+</footer>
+
+</body>
+</html>
