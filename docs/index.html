@@ -7,7 +7,7 @@
 <meta name="description" content="A small payment example makes the business case for dbt: clear definitions, repeatable calculations, and checks you can inspect.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..500&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#FAFAF7;
@@ -19,6 +19,7 @@
     --rule:#E2E4DF;
     --serif:"Newsreader",Georgia,"Times New Roman",serif;
     --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   }
 
   *{box-sizing:border-box}
@@ -127,6 +128,101 @@
     margin:22px 0 0;text-align:center;
     font-family:var(--sans);font-size:.76rem;color:var(--ink-60);
     letter-spacing:.02em;
+  }
+
+  /* One orchestrated reveal for the equation. Applied by script only,
+     so the finished figures are present without JavaScript. */
+  .equation.is-armed .eq-op,
+  .equation.is-armed .eq-label,
+  .equation.is-armed .eq-detail{opacity:0}
+  .equation.is-armed .eq-num{opacity:.18}
+  .equation.is-armed.is-playing .eq-op,
+  .equation.is-armed.is-playing .eq-label,
+  .equation.is-armed.is-playing .eq-detail{
+    opacity:1;
+    transition:opacity .8s cubic-bezier(.22,.61,.36,1) var(--d,0s);
+  }
+  .equation.is-armed.is-playing .eq-num{
+    opacity:1;
+    transition:opacity .5s ease var(--d,0s);
+  }
+
+  /* ---------- build visual: model to table ---------- */
+  .build-viz{
+    display:grid;grid-template-columns:1.12fr .88fr;
+    margin:clamp(48px,6vw,78px) 0 0;
+    border:1px solid var(--rule);border-radius:4px;overflow:hidden;
+  }
+  .bv-pane{padding:clamp(22px,2.6vw,30px) clamp(20px,2.4vw,28px)}
+  .bv-code{background:#FDFDFB;border-right:1px solid var(--rule)}
+  .bv-out{background:var(--mint);display:flex;flex-direction:column}
+  .bv-label{
+    margin:0 0 18px;font-family:var(--sans);font-size:.72rem;
+    font-weight:500;color:var(--ink-60);letter-spacing:.02em;
+  }
+  .bv-src{
+    display:block;font-family:var(--mono);font-size:.775rem;
+    line-height:1.85;color:var(--ink);
+    overflow-x:auto;overflow-y:hidden;
+  }
+  .bv-src .ln{display:block;white-space:pre;min-height:1.85em}
+  .bv-src .k{color:var(--green);font-weight:500}
+  .bv-src .j{color:var(--green);font-style:italic}
+  .bv-src .c{color:var(--ink-60)}
+  .bv-src .s{color:var(--ink-60)}
+  .bv-src .ln.typing::after{
+    content:"";display:inline-block;width:.55em;height:1.05em;
+    background:var(--green);vertical-align:-.18em;margin-left:1px;
+    animation:bv-blink 1.05s step-end infinite;
+  }
+  @keyframes bv-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+  .bv-table{width:100%;font-family:var(--mono);font-size:.78rem;font-variant-numeric:tabular-nums}
+  .bv-table th,.bv-table td{padding:7px 0;border-bottom:1px solid rgba(23,26,24,.09)}
+  .bv-table th{
+    font-family:var(--sans);font-size:.68rem;font-weight:500;
+    color:var(--ink-60);letter-spacing:.02em;
+    border-bottom:1px solid rgba(23,26,24,.22);
+  }
+  .bv-table td:last-child,.bv-table th:last-child{text-align:right}
+  .bv-table tfoot td{
+    border-bottom:none;border-top:1px solid rgba(23,26,24,.22);
+    padding-top:11px;font-family:var(--sans);font-size:.72rem;color:var(--ink-60);
+  }
+  .bv-table tfoot td.bv-total{font-family:var(--mono);font-size:.9rem;color:var(--green);font-weight:500}
+  .bv-status{
+    margin:20px 0 0;font-family:var(--sans);font-size:.74rem;
+    line-height:1.55;color:var(--ink-60);
+  }
+  .bv-status b{color:var(--green);font-weight:600}
+
+  /* build visual: motion, applied by script only */
+  .build-viz.is-armed .bv-row{opacity:0}
+  .build-viz.is-armed.is-playing .bv-row{opacity:1;transition:opacity .5s ease var(--d,0s)}
+  .build-viz.is-armed .bv-status{opacity:0}
+  .build-viz.is-armed.is-playing .bv-status{opacity:1;transition:opacity .7s ease var(--d,0s)}
+
+  /* flow diagram: motion, applied by script only */
+  .flow.is-armed .node{opacity:0;transform:translateY(12px)}
+  .flow.is-armed.is-playing .node{
+    opacity:1;transform:none;
+    transition:opacity .75s ease var(--d,0s),transform .75s cubic-bezier(.22,.61,.36,1) var(--d,0s);
+  }
+  .flow.is-armed .node li{opacity:0}
+  .flow.is-armed.is-playing .node li{opacity:1;transition:opacity .55s ease var(--d,0s)}
+  .flow.is-armed .node .check::before{opacity:0;transform:rotate(-45deg) scale(.25)}
+  .flow.is-armed.is-playing .node .check::before{
+    opacity:1;transform:rotate(-45deg) scale(1);
+    transition:opacity .3s ease var(--d,0s),transform .5s cubic-bezier(.34,1.56,.64,1) var(--d,0s);
+  }
+  .flow.is-armed .arrow{opacity:0;clip-path:inset(0 100% 0 0)}
+  .flow.is-armed.is-playing .arrow{
+    opacity:1;clip-path:inset(0 0 0 0);
+    transition:opacity .3s ease var(--d,0s),clip-path .55s cubic-bezier(.22,.61,.36,1) var(--d,0s);
+  }
+  .flow.is-armed .out-figure,.flow.is-armed .out-sub{opacity:0}
+  .flow.is-armed.is-playing .out-figure,.flow.is-armed.is-playing .out-sub{
+    opacity:1;transition:opacity .5s ease var(--d,0s);
   }
 
   /* ---------- ledger table ---------- */
@@ -247,6 +343,8 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:860px){
+    .build-viz{grid-template-columns:1fr}
+    .bv-code{border-right:none;border-bottom:1px solid var(--rule)}
     .flow{grid-template-columns:1fr;gap:12px}
     .arrow{transform:rotate(90deg);justify-self:center;padding:2px 0}
   }
@@ -261,6 +359,8 @@
     th,td{padding:10px 5px}
     .limits{padding:24px 22px 20px}
     .node{padding:22px 20px}
+    .bv-src{font-size:.7rem}
+    .bv-table{font-size:.72rem}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -334,12 +434,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr><th scope="row">101</th><td>Completed</td><td>$100</td><td>—</td><td class="net">$100</td></tr>
-          <tr><th scope="row">102</th><td>Completed</td><td>$150</td><td>—</td><td class="net">$150</td></tr>
+          <tr><th scope="row">101</th><td>Completed</td><td>$100</td><td>$0</td><td class="net">$100</td></tr>
+          <tr><th scope="row">102</th><td>Completed</td><td>$150</td><td>$0</td><td class="net">$150</td></tr>
           <tr class="cancelled"><th scope="row">103</th><td>Cancelled</td><td>$80</td><td>$80</td><td class="net">$0</td></tr>
           <tr><th scope="row">104</th><td>Completed</td><td>$200</td><td>$50</td><td class="net">$150</td></tr>
-          <tr><th scope="row">105</th><td>Completed</td><td>$120</td><td>—</td><td class="net">$120</td></tr>
-          <tr><th scope="row">106</th><td>Completed</td><td>$90</td><td>—</td><td class="net">$90</td></tr>
+          <tr><th scope="row">105</th><td>Completed</td><td>$120</td><td>$0</td><td class="net">$120</td></tr>
+          <tr><th scope="row">106</th><td>Completed</td><td>$90</td><td>$0</td><td class="net">$90</td></tr>
         </tbody>
         <tfoot>
           <tr>
@@ -358,18 +458,41 @@
 
     <p>The fix is not a bigger dashboard. It is agreeing on one definition and making it repeatable.</p>
 
-    <p>That is what dbt is for. It is a tool used by data teams to transform data that already sits in your database. The team writes the calculation once — what counts as a completed order, how refunds are handled — and dbt runs it the same way every time, with checks attached and documentation produced alongside it.</p>
+    <p>That is what dbt is for. It is a tool used by data teams to transform data that already sits in your database. The team writes the calculation once, deciding what counts as a completed order and how refunds are handled, and dbt runs it the same way every time, with checks attached and documentation produced alongside it.</p>
 
     <p>In business terms, that buys you four things:</p>
 
     <ul class="plain-list">
       <li><b>Shared rules.</b> "Net collections" is defined in one place, so Finance and Marketing stop arriving with different totals.</li>
-      <li><b>Automatic checks.</b> A missing order ID, a status nobody recognizes, a payment pointing at an order that does not exist: these surface when the data is built, not in the meeting.</li>
+      <li><b>Automatic checks.</b> A missing order ID, a status nobody recognizes, a payment pointing at an order that does not exist: these show up when the data is built, not in the meeting.</li>
       <li><b>Reviewable changes.</b> The calculation lives in version-controlled code, so changing the definition is proposed, reviewed and dated like any other decision.</li>
       <li><b>Traceable results.</b> Anyone can look up how a number was produced.</li>
     </ul>
 
     <p>It is worth being equally clear about what dbt does not do. It does not decide the business definition; that is a judgment call, and Finance should own it. It does not take over Finance's responsibility for the number. And it does not repair incorrect source data. It tells you the data is wrong, early and loudly, but someone still has to go fix it.</p>
+  </div>
+
+  <div class="wide">
+    <figure class="build-viz" aria-labelledby="build-viz-caption">
+      <div class="bv-pane bv-code">
+        <p class="bv-label">models/marts/fct_order_net_collections.sql</p>
+        <code class="bv-src"><span class="ln"><span class="c">-- models/marts/fct_order_net_collections.sql</span></span><span class="ln"><span class="c">-- One row per completed order.</span></span><span class="ln"></span><span class="ln"><span class="k">with</span> payments <span class="k">as</span> (</span><span class="ln">    <span class="k">select</span></span><span class="ln">        order_id,</span><span class="ln">        <span class="k">sum</span>(<span class="k">case when</span> payment_type = <span class="s">'refund'</span></span><span class="ln">                 <span class="k">then</span> -amount <span class="k">else</span> amount <span class="k">end</span>)</span><span class="ln">            <span class="k">as</span> collected_amount</span><span class="ln">    <span class="k">from</span> <span class="j">{{ ref('payments') }}</span></span><span class="ln">    <span class="k">group by</span> order_id</span><span class="ln">)</span><span class="ln"></span><span class="ln"><span class="k">select</span></span><span class="ln">    o.order_id,</span><span class="ln">    o.customer_id,</span><span class="ln">    <span class="k">coalesce</span>(p.collected_amount, 0)</span><span class="ln">        <span class="k">as</span> net_collected_amount</span><span class="ln"><span class="k">from</span> <span class="j">{{ ref('orders') }}</span> <span class="k">as</span> o</span><span class="ln"><span class="k">left join</span> payments <span class="k">as</span> p <span class="k">using</span> (order_id)</span><span class="ln"><span class="k">where</span> o.status = <span class="s">'completed'</span></span></code>
+      </div>
+      <div class="bv-pane bv-out">
+        <p class="bv-label">fct_order_net_collections</p>
+        <table class="bv-table">
+          <thead>
+            <tr class="bv-row"><th scope="col">order_id</th><th scope="col">net_collected_amount</th></tr>
+          </thead>
+          <tbody><tr class="bv-row"><td>101</td><td>100.00</td></tr><tr class="bv-row"><td>102</td><td>150.00</td></tr><tr class="bv-row"><td>104</td><td>150.00</td></tr><tr class="bv-row"><td>105</td><td>120.00</td></tr><tr class="bv-row"><td>106</td><td>90.00</td></tr></tbody>
+          <tfoot>
+            <tr class="bv-row"><td>5 completed orders</td><td class="bv-total">610.00</td></tr>
+          </tfoot>
+        </table>
+        <p class="bv-status">dbt build: 3 seeds, 1 model, 23 tests. <b>27 successful steps.</b></p>
+      </div>
+    </figure>
+    <p class="fig-caption" id="build-viz-caption">The calculation is written once and kept in the repository, and every build produces the same table from it. The model is shown in outline; the full source and the 23 tests are in the project. Synthetic example. All amounts in USD.</p>
   </div>
 
   <div class="wide">
@@ -407,14 +530,14 @@
 
     <p>To keep the argument concrete, I built the example above as a working project.</p>
 
-    <p>dbt is installed and runs locally against MotherDuck, a cloud database. Three CSV files — customers, orders and payments — are loaded using dbt seeds. One table model calculates net collections for each completed order. Payments are aggregated by order before they are joined, so an order with three payment rows still appears once instead of three times. That single detail is where a lot of hand-built revenue reports quietly go wrong.</p>
+    <p>dbt is installed and runs locally against MotherDuck, a cloud database. Three CSV files are loaded using dbt seeds: customers, orders and payments. One table model calculates net collections for each completed order. Payments are aggregated by order before they are joined, so an order with three payment rows still appears once instead of three times. That single detail is where a lot of hand-built revenue reports quietly go wrong.</p>
 
     <div class="build">
       <p class="sum">A full build runs 3 seeds, 1 model and 23 tests: <b>27 successful steps.</b></p>
-      <p class="note">The 23 tests check the structure of the data — unique IDs, required values, accepted status values, and valid relationships between tables. They do not reconcile the financial total.</p>
+      <p class="note">The 23 tests check the structure of the data: unique IDs, required values, accepted status values, and valid relationships between tables. They do not reconcile the financial total.</p>
     </div>
 
-    <p>The total itself I verified separately, by querying MotherDuck directly: five completed orders, $610.00 in net collections. The tests tell you the data is well-formed. The query tells you the number matches the definition. Those are two different guarantees.</p>
+    <p>The total itself I verified separately, by querying MotherDuck directly: five completed orders, $610.00 in net collections. The tests tell you the data is in good shape. The query tells you the number matches the definition. Those are two different promises, and it is worth keeping them apart.</p>
 
     <div class="limits">
       <h3>What this demonstration does not prove</h3>
@@ -451,7 +574,7 @@
 
     <p>The request is narrow on purpose: one metric, four weeks, run in parallel, measured against what we do today. If the discrepancies do not shrink and the definition is no easier to change, we stop, and we have learned that cheaply. If they do, we will be deciding how far to take this from evidence rather than from a recommendation.</p>
 
-    <p class="cta"><a class="btn" href="https://github.com/juancos/datacoves-dbt-challenge">Explore the project on GitHub</a></p>
+    <p class="cta"><a class="btn" href="https://github.com/juancos/datacoves-dbt-challenge/blob/main/README.md">Explore the project on GitHub</a></p>
   </div>
 
 </article>
@@ -464,5 +587,204 @@
   </div>
 </footer>
 
+
+<script>
+(function () {
+  if (!('requestAnimationFrame' in window)) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  /* ---------- shared helpers ---------- */
+
+  function whenVisible(el, ratio, fn) {
+    if (!('IntersectionObserver' in window)) { fn(); return; }
+    var fired = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !fired) { fired = true; io.disconnect(); fn(); }
+      });
+    }, { threshold: ratio });
+    io.observe(el);
+  }
+
+  function delay(el, seconds) { el.style.setProperty('--d', seconds + 's'); }
+
+  // Counts an element up to its final numeric value, keeping its width fixed
+  // so the surrounding layout never shifts mid-count.
+  function countUp(el, opts) {
+    var raw = el.textContent.trim();
+    var target = parseFloat(raw.replace(/[^0-9.]/g, ''));
+    var decimals = (raw.split('.')[1] || '').length;
+    var prefix = raw.charAt(0) === '$' ? '$' : '';
+    var duration = opts.duration || 900;
+
+    el.style.minWidth = el.getBoundingClientRect().width + 'px';
+    el.textContent = prefix + (0).toFixed(decimals);
+
+    window.setTimeout(function () {
+      var start = null;
+      function step(ts) {
+        if (start === null) start = ts;
+        var t = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = prefix + (target * eased).toFixed(decimals);
+        if (t < 1) { requestAnimationFrame(step); }
+        else { el.textContent = raw; el.style.minWidth = ''; }
+      }
+      requestAnimationFrame(step);
+    }, opts.delay || 0);
+  }
+
+  /* ---------- 1. the equation ---------- */
+
+  function equation() {
+    var fig = document.querySelector('.equation');
+    if (!fig) return;
+    var nums = [].slice.call(fig.querySelectorAll('.eq-num'));
+    var ops = [].slice.call(fig.querySelectorAll('.eq-op'));
+    var labels = [].slice.call(fig.querySelectorAll('.eq-label'));
+    var detail = fig.querySelector('.eq-detail');
+    if (nums.length !== 3) return;
+
+    var numDelay = [0, 0.45, 1.00];
+    var numDur = [850, 700, 1000];
+
+    nums.forEach(function (el, i) { delay(el, numDelay[i]); });
+    [0.38, 1.00].forEach(function (d, i) { if (ops[i]) delay(ops[i], d); });
+    [0.60, 1.00, 1.55].forEach(function (d, i) { if (labels[i]) delay(labels[i], d); });
+    if (detail) delay(detail, 1.95);
+    fig.classList.add('is-armed');
+
+    whenVisible(fig, 0.4, function () {
+      fig.classList.add('is-playing');
+      nums.forEach(function (el, i) {
+        countUp(el, { duration: numDur[i], delay: numDelay[i] * 1000 });
+      });
+    });
+  }
+
+  /* ---------- 2. the model writing itself, then the table ---------- */
+
+  function buildViz() {
+    var fig = document.querySelector('.build-viz');
+    if (!fig) return;
+    var lines = [].slice.call(fig.querySelectorAll('.bv-src .ln'));
+    var rows = [].slice.call(fig.querySelectorAll('.bv-row'));
+    var status = fig.querySelector('.bv-status');
+    var total = fig.querySelector('.bv-total');
+    if (!lines.length) return;
+
+    function escape(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Read the highlighted markup into tokens, so typing can rebuild it
+    // character by character without losing the colouring.
+    var model = lines.map(function (line) {
+      var tokens = [].slice.call(line.childNodes).map(function (node) {
+        return node.nodeType === 3
+          ? { text: node.nodeValue, cls: null }
+          : { text: node.textContent, cls: node.className || null };
+      });
+      var length = tokens.reduce(function (n, t) { return n + t.text.length; }, 0);
+      return { el: line, tokens: tokens, len: length, html: line.innerHTML, done: false };
+    });
+
+    function slice(tokens, count) {
+      var html = '', used = 0;
+      for (var i = 0; i < tokens.length && used < count; i++) {
+        var take = Math.min(tokens[i].text.length, count - used);
+        var chunk = escape(tokens[i].text.slice(0, take));
+        html += tokens[i].cls ? '<span class="' + tokens[i].cls + '">' + chunk + '</span>' : chunk;
+        used += take;
+      }
+      return html;
+    }
+
+    // A short pause at each line break gives the typing a natural rhythm.
+    var PAUSE = 7, RATE = 0.26; // characters per millisecond
+    var offsets = [], running = 0;
+    model.forEach(function (line) { offsets.push(running); running += line.len + PAUSE; });
+    var totalChars = running;
+    var typingMs = totalChars / RATE;
+
+    model.forEach(function (line) { line.el.innerHTML = ''; });
+    rows.forEach(function (row, i) { delay(row, (typingMs + 220 + i * 90) / 1000); });
+    if (status) delay(status, (typingMs + 220 + rows.length * 90 + 260) / 1000);
+    fig.classList.add('is-armed');
+
+    whenVisible(fig, 0.25, function () {
+      fig.classList.add('is-playing');
+      var start = null;
+      function frame(ts) {
+        if (start === null) start = ts;
+        var cursor = (ts - start) * RATE;
+        var active = -1;
+        model.forEach(function (line, i) {
+          if (line.done) return;
+          var typed = Math.floor(cursor - offsets[i]);
+          if (typed <= 0) return;
+          if (typed >= line.len) {
+            line.el.innerHTML = line.html;
+            line.el.classList.remove('typing');
+            line.done = true;
+          } else {
+            line.el.innerHTML = slice(line.tokens, typed);
+            active = i;
+          }
+        });
+        model.forEach(function (line, i) {
+          line.el.classList.toggle('typing', i === active);
+        });
+        if (cursor < totalChars) { requestAnimationFrame(frame); }
+        else {
+          model.forEach(function (line) {
+            line.el.innerHTML = line.html;
+            line.el.classList.remove('typing');
+          });
+          if (total) countUp(total, { duration: 900, delay: rows.length * 90 + 160 });
+        }
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+
+  /* ---------- 3. the flow diagram ---------- */
+
+  function flow() {
+    var fig = document.querySelector('.flow');
+    if (!fig) return;
+    var nodes = [].slice.call(fig.querySelectorAll('.node'));
+    var arrows = [].slice.call(fig.querySelectorAll('.arrow'));
+    var figure = fig.querySelector('.out-figure');
+    var sub = fig.querySelector('.out-sub');
+    if (nodes.length !== 3) return;
+
+    var nodeDelay = [0, 0.62, 1.58];
+    nodes.forEach(function (node, i) {
+      delay(node, nodeDelay[i]);
+      [].slice.call(node.querySelectorAll('li')).forEach(function (li, j) {
+        delay(li, nodeDelay[i] + 0.18 + j * 0.14);
+      });
+    });
+    [0.48, 1.44].forEach(function (d, i) { if (arrows[i]) delay(arrows[i], d); });
+    if (figure) delay(figure, 1.78);
+    if (sub) delay(sub, 1.95);
+    fig.classList.add('is-armed');
+
+    whenVisible(fig, 0.3, function () {
+      fig.classList.add('is-playing');
+      if (figure) countUp(figure, { duration: 1000, delay: 1850 });
+    });
+  }
+
+  function init() { equation(); buildViz(); flow(); }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(init).catch(init);
+  } else {
+    window.addEventListener('load', init);
+  }
+})();
+</script>
 </body>
 </html>
